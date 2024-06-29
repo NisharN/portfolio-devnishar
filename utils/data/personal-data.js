@@ -8,7 +8,6 @@ export const personalData = {
   phone: "+91 8606389611",
   address: "Thalassery, Kerala, India",
   github: "https://github.com/de-salman",
-  facebook: "https://www.facebook.com/abusaid.riyaz/",
   linkedIn: "https://www.linkedin.com/in/salman-farisi-93888b1ab/",
   resume:
     "https://drive.google.com/file/d/1O5LGjVM4pnEH9GUZqyrol2q7wbsBjWHp/view",
