@@ -2,7 +2,7 @@ export const projectDetails = [
   {
     id: 1,
     title: "Dubai Airport Booking System",
-    url: "www.dihdxb.ae",
+    url: "https://www.dihdxb.ae",
     image: "/website/1.png",
     desc: "Service booking system for B2B and B2C, developed using MERN Stack",
   },
@@ -16,7 +16,7 @@ export const projectDetails = [
   {
     id: 3,
     title: "Pioneer",
-    url: "#",
+    url: "https://pioneer-mea.com/",
     image: "/website/3.png",
     desc: "Developer a user friendly website to display all the details and specification of all cateogry products of pioneer",
   },
