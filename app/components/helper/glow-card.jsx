@@ -1,10 +1,14 @@
 "use client"
 import { useEffect } from 'react';
 
-const GlowCard = ({ children , identifier}) => {
+const GlowCard = ({ children, identifier }) => {
   useEffect(() => {
+    if (typeof document === 'undefined') return;  // ✅ Add this check
+
     const CONTAINER = document.querySelector(`.glow-container-${identifier}`);
     const CARDS = document.querySelectorAll(`.glow-card-${identifier}`);
+
+    if (!CONTAINER || !CARDS) return; // ✅ Avoid errors if elements are missing
 
     const CONFIG = {
       proximity: 40,
@@ -61,7 +65,7 @@ const GlowCard = ({ children , identifier}) => {
     RESTYLE();
     UPDATE();
 
-    // Cleanup event listener
+    // Cleanup
     return () => {
       document.body.removeEventListener('pointermove', UPDATE);
     };
