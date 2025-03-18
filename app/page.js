@@ -16,31 +16,34 @@ export default function Home() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        async function fetchData() {
-            try {
-                const res = await fetch(
-                    `https://dev.to/api/articles?username=${personalData.devUsername}`
-                );
+        if (typeof window !== "undefined") {
+            // Ensure this code runs only on the client side
+            async function fetchData() {
+                try {
+                    const res = await fetch(
+                        `https://dev.to/api/articles?username=${personalData.devUsername}`
+                    );
 
-                if (!res.ok) {
-                    throw new Error("Failed to fetch data");
+                    if (!res.ok) {
+                        throw new Error("Failed to fetch data");
+                    }
+
+                    const data = await res.json();
+
+                    const filtered = data
+                        .filter((item) => item?.cover_image)
+                        .sort(() => Math.random() - 0.5);
+
+                    setBlogs(filtered);
+                } catch (error) {
+                    console.error("Error fetching blog data:", error);
+                } finally {
+                    setLoading(false);
                 }
-
-                const data = await res.json();
-
-                const filtered = data
-                    .filter((item) => item?.cover_image)
-                    .sort(() => Math.random() - 0.5);
-
-                setBlogs(filtered);
-            } catch (error) {
-                console.error("Error fetching blog data:", error);
-            } finally {
-                setLoading(false);
             }
-        }
 
-        fetchData();
+            fetchData();
+        }
     }, []);
 
     return (
