@@ -1,6 +1,10 @@
 // @flow strict
 
 import * as React from 'react';
+import Image from 'next/image';
+
+
+
 
 function CertCard({ project }) {
 
@@ -23,7 +27,7 @@ function CertCard({ project }) {
       <div className="overflow-hidden border-t-[2px] border-indigo-900 px-4 lg:px-8 py-4 lg:py-8
       ">
         <div className='flex justify-center mb-5'>
-        <img src={project.image} width={"30%"} />
+        <Image src={project.image} width={"30%"} />
         </div>
         <code className="font-mono text-xs md:text-sm lg:text-base">
           <div className="blink">

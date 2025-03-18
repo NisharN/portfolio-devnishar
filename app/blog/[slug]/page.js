@@ -45,7 +45,7 @@ async function BlogDetails({ params }) {
     return (
       <div>
         <h1>Blog Not Found</h1>
-        <p>Sorry, we couldn't fetch the blog content. Please try again later.</p>
+        <p>Sorry we couldnt fetch the blog content. Please try again later.</p>
       </div>
     );
   }
