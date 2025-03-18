@@ -7,12 +7,14 @@ import Navbar from "./components/navbar";
 import "./css/card.scss";
 import "./css/globals.scss";
 import ScrollToTop from "./components/helper/scroll-to-top";
+import icon from "../app/favicon.ico"
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Portfolio of Salman Farisi - Software Developer",
+  title: "Nishar Ahamed - Portfolio",
   description:
-    "This is the portfolio of Salman Farisi. I am a full stack developer and a self taught developer. I love to learn new things and I am always open to collaborating with others. I am a quick learner and I am always looking for new challenges.",
+    "This is the portfolio of Nishar Ahamed. I am a full stack developer and a self taught developer. I love to learn new things and I am always open to collaborating with others. I am a quick learner and I am always looking for new challenges.",
+    icon:icon,
 };
 
 export default function RootLayout({ children }) {

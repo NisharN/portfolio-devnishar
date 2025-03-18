@@ -1,161 +1,93 @@
-"use client";
-// @flow strict
-import { isValidEmail } from '@/utils/check-email';
+// Contact Component
+"use client"
+// Contact Component
 import { useState } from 'react';
-import { TbMailForward } from "react-icons/tb";
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Contact() {
   const [input, setInput] = useState({
-    name: '',
     email: '',
-    contact: '',
     message: '',
   });
-  const [error, setError] = useState({
-    email: false,
-    required: false,
-  });
 
-  const checkRequired = () => {
-    if (input.email && input.message && input.name && input.contact) {
-      setError({ ...error, required: false });
-    }
-  };
+  const [error, setError] = useState(false);
 
   const handleSendMail = async (e) => {
-
     e.preventDefault();
-    if (!input.email || !input.message || !input.name || !input.contact) {
-      setError({ ...error, required: true });
-      return;
-    } else if (error.email) {
-      return;
-    } else {
-      setError({ ...error, required: false });
-    };
 
+    // Validate inputs
+    if (!input.email || !input.message) {
+      setError(true);
+      toast.error('Please fill in all fields correctly.');
+      return;
+    }
+
+    setError(false);
+
+    // Prepare data for sending
+    const formData = new FormData();
+    formData.append('Email', input.email);
+    formData.append('Message', input.message);
 
     try {
-
-      let formData = new FormData();
-      formData.append("Name", input.name);
-      formData.append("Email", input.email);
-      formData.append("Phone", input.message);
-      formData.append("Contact", input.contact);
-
-      fetch(
-        "https://script.google.com/macros/s/AKfycbw8LJHW60QO0coHAwo5PiIfzSUxUlR_D8d_pQVZfREMoBrHx1ENnAR8rmnUn9oBumMs2w/exec",
+      const response = await fetch(
+        "https://script.google.com/macros/s/AKfycbyvfv5guH5BU81NuffnW1rX3bCfWyMNidbk1lW399pCyx8msbu9-HIPow0sh1cEjZ38/exec",
         {
           method: "POST",
           body: formData,
         }
-      )
-        .then((res) => {
-          if (res.status === 200) {
-          toast.success('Message sent successfully!');
-            setInput({
-              name: '',
-              email: '',
-              message: '',
-              contact:'',
-            });
-          };
-        })
-    } catch (error) {
-      toast.error(error?.text || error);
-    };
+      );
+
+      if (response.ok) {
+        toast.success('Message sent successfully!');
+        setInput({ email: '', message: '' });
+      } else {
+        toast.error('Failed to send message. Please try again.');
+      }
+    } catch (err) {
+      toast.error('An error occurred. Please try again later.');
+    }
   };
 
   return (
-    <div className="">
-      <p className="font-medium mb-5 text-[#16f2b3] text-xl uppercase">
-        Contact with me
-      </p>
-      <div className="max-w-3xl text-white rounded-lg border border-[#464c6a] p-3 lg:p-5">
-        <p className="text-sm text-[#d3d8e8]">
-          {"If you have any questions or concerns, please don't hesitate to contact me. I am open to any work opportunities that align with my skills and interests."}
-        </p>
-        <div className="mt-6 flex flex-col gap-4">
-          <div className="flex flex-col gap-2">
-            <label className="text-base">Your Name: </label>
-            <input
-              className="bg-[#10172d] w-full border rounded-md border-[#353a52] focus:border-[#16f2b3] ring-0 outline-0 transition-all duration-300 px-3 py-2"
-              type="text"
-              maxLength="100"
-              required={true}
-              onChange={(e) => setInput({ ...input, name: e.target.value })}
-              onBlur={checkRequired}
-              value={input.name}
-            />
-          </div>
+    <div className="max-w-md mx-auto p-4">
+      <ToastContainer /> {/* ToastContainer must be included */}
+      <h1 className="text-xl font-bold mb-4 text-[#16f2b3]">Contact Me</h1>
+      <p className="mt-1 font-normal text-md my-2">Drop a Message,if you have any website ideas:)</p>
 
-          <div className="flex flex-col gap-2">
-            <label className="text-base">Your Email: </label>
-            <input
-              className="bg-[#10172d] w-full border rounded-md border-[#353a52] focus:border-[#16f2b3] ring-0 outline-0 transition-all duration-300 px-3 py-2"
-              type="email"
-              maxLength="100"
-              required={true}
-              value={input.email}
-              onChange={(e) => setInput({ ...input, email: e.target.value })}
-              onBlur={() => {
-                checkRequired();
-                setError({ ...error, email: !isValidEmail(input.email) });
-              }}
-            />
-            {error.email &&
-              <p className="text-sm text-red-400">Please provide a valid email!</p>
-            }
-          </div>
-
-
-          <div className="flex flex-col gap-2">
-            <label className="text-base">Your Contact: </label>
-            <input
-              className="bg-[#10172d] w-full border rounded-md border-[#353a52] focus:border-[#16f2b3] ring-0 outline-0 transition-all duration-300 px-3 py-2"
-              maxLength="100"
-              required={true}
-              value={input.contact}
-              onChange={(e) => setInput({ ...input, contact: e.target.value })}
-              onBlur={() => {
-                checkRequired();
-              }}
-            />
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label className="text-base">Your Message: </label>
-            <textarea
-              className="bg-[#10172d] w-full border rounded-md border-[#353a52] focus:border-[#16f2b3] ring-0 outline-0 transition-all duration-300 px-3 py-2"
-              maxLength="500"
-              name="message"
-              required={true}
-              onChange={(e) => setInput({ ...input, message: e.target.value })}
-              onBlur={checkRequired}
-              rows="4"
-              value={input.message}
-            />
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            {error.required &&
-              <p className="text-sm text-red-400">
-                All fields are required!
-              </p>
-            }
-            <button
-              className="flex items-center gap-1 hover:gap-3 rounded-full bg-gradient-to-r from-pink-500 to-violet-600 px-5 md:px-12 py-2.5 md:py-3 text-center text-xs md:text-sm font-medium uppercase tracking-wider text-white no-underline transition-all duration-200 ease-out hover:text-white hover:no-underline md:font-semibold"
-              role="button"
-              onClick={handleSendMail}
-            >
-              <span>Send Message</span>
-              <TbMailForward className="mt-1" size={18} />
-            </button>
-          </div>
+      <form className="space-y-4" onSubmit={handleSendMail}>
+        <div>
+          <label className="block text-sm font-medium text-[#d3d8e8]">Your Email</label>
+          <input
+            type="email"
+            className="w-full bg-[#10172d] border rounded px-3 py-2 text-white border-[#353a52] focus:border-[#16f2b3] focus:outline-none"
+            value={input.email}
+            onChange={(e) => setInput({ ...input, email: e.target.value })}
+            required
+          />
         </div>
-      </div>
+
+        <div>
+          <label className="block text-sm font-medium text-[#d3d8e8]">Your Message</label>
+          <textarea
+            className="w-full bg-[#10172d] border rounded px-3 py-2 text-white border-[#353a52] focus:border-[#16f2b3] focus:outline-none"
+            rows="4"
+            value={input.message}
+            onChange={(e) => setInput({ ...input, message: e.target.value })}
+            required
+          ></textarea>
+        </div>
+
+        <button
+          type="submit"
+          className="w-full bg-gradient-to-r from-pink-500 to-violet-600 text-white py-2 rounded hover:from-pink-600 hover:to-violet-700"
+        >
+          Send Message
+        </button>
+      </form>
     </div>
   );
-};
+}
 
 export default Contact;
